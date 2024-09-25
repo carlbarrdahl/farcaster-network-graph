@@ -5,13 +5,9 @@ import { NextRequest } from "next/server";
 
 import { PinataFDK } from "pinata-fdk";
 
-const PINATA_JWT =
-  "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySW5mb3JtYXRpb24iOnsiaWQiOiI1MTI2NzEzZC04ZGZlLTQwODktYTZiYS03OTViMjc0ZTBiODMiLCJlbWFpbCI6ImNhcmxiYXJyZGFobEBnbWFpbC5jb20iLCJlbWFpbF92ZXJpZmllZCI6dHJ1ZSwicGluX3BvbGljeSI6eyJyZWdpb25zIjpbeyJpZCI6IkZSQTEiLCJkZXNpcmVkUmVwbGljYXRpb25Db3VudCI6MX1dLCJ2ZXJzaW9uIjoxfSwibWZhX2VuYWJsZWQiOmZhbHNlLCJzdGF0dXMiOiJBQ1RJVkUifSwiYXV0aGVudGljYXRpb25UeXBlIjoic2NvcGVkS2V5Iiwic2NvcGVkS2V5S2V5IjoiZDBhOTM3ZTQ4Mjg0MzJjNDE5YzUiLCJzY29wZWRLZXlTZWNyZXQiOiJhNmJkNDU4Y2M0OTE1OWQwZDE1NzM5NTc1YjQ5ZjQ0NWU0OWU0MmY3MTkzZWM1OWZjMWFlZDBmNjkyYjYyOWRkIiwiaWF0IjoxNzE3NzUyMDI2fQ.zPyLyfcmvJs6LMZszPgIu0HNS0tvNiXrtivvjPZzexQ";
-const PINATA_GATEWAY_URL = "apricot-surviving-takin-594.mypinata.cloud";
-
 const fdk = new PinataFDK({
-  pinata_jwt: PINATA_JWT,
-  pinata_gateway: PINATA_GATEWAY_URL,
+  pinata_jwt: process.env.PINATA_JWT!,
+  pinata_gateway: process.env.PINATA_GATEWAY_URL!,
 });
 
 // Cache fetch requests for 1 hour
