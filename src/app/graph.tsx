@@ -31,7 +31,7 @@ export function NetworkGraph({
     <ForceGraph2D
       width={width}
       height={width}
-      graphData={{ nodes, links: edges }}
+      graphData={{ nodes: [...nodes], links: [...edges] }}
       nodeCanvasObject={(node, ctx, globalScale) => {
         const label = node.username;
         const fontSize = 12 / globalScale;

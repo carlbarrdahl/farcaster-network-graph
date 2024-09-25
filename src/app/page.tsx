@@ -25,17 +25,16 @@ export default function Home() {
     ? { nodes: [], edges: [] }
     : call.data || getInitialGraph();
 
-  console.log(graph);
-  const [currentTimestamp, setMaxTimestamp] = useState(
+  const [currentTimestamp, setCurrentTimestamp] = useState(
     getMaxTimestamp(graph.edges)
   );
+  console.log({ currentTimestamp }, Date.now());
+  const filteredGraph = filterGraphByTimestamp({ ...graph }, currentTimestamp);
 
-  const filteredGraph = filterGraphByTimestamp(graph, currentTimestamp);
-
+  console.log(JSON.stringify(filteredGraph, null, 2));
   const [ref, { width }] = useMeasure();
   const minTimestamp = getMinTimestamp(graph.edges);
   const maxTimestamp = getMaxTimestamp(graph.edges);
-  console.log({ minTimestamp, maxTimestamp });
 
   return (
     <div>
@@ -43,7 +42,7 @@ export default function Home() {
         isLoading={call.isPending}
         onSubmit={(users) => {
           console.log("users", users);
-
+          // setCurrentTimestamp(Date.now());
           call.mutate(users);
         }}
       />
@@ -55,7 +54,7 @@ export default function Home() {
           max={maxTimestamp}
           step={1}
           value={[currentTimestamp]}
-          onValueChange={(value) => setMaxTimestamp(Number(value))}
+          onValueChange={(value) => setCurrentTimestamp(Number(value))}
         />
       </div>
       <div className="flex justify-between text-sm mb-2" ref={ref}>
@@ -95,7 +94,6 @@ function filterGraphByTimestamp(graph, maxTimestamp) {
     edges: filteredEdges,
   };
 }
-
 function getMinTimestamp(edges = []) {
   return edges.length
     ? Math.min(...edges.map((edge) => edge.timestamp))

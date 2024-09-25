@@ -34,7 +34,7 @@ export const MetricsDisplay = ({ nodes, edges }) => {
                     <strong>{nodeLabels[i]}</strong>
                   </td>
                   {row.map((value, j) => (
-                    <td key={nodeIds[j]}>{value}</td>
+                    <td key={nodeIds[j]}>{i === j ? " " : value}</td>
                   ))}
                 </tr>
               ))}
@@ -80,45 +80,50 @@ export const MetricsDisplay = ({ nodes, edges }) => {
 };
 
 function computeMetrics(nodes, edges) {
-  // Number of edges
-  const numEdges = edges.length;
+  try {
+    // Number of edges
+    const numEdges = edges.length;
 
-  // Create a graphlib Graph
-  const g = new Graph({ directed: true });
+    // Create a graphlib Graph
+    const g = new Graph({ directed: false });
 
-  // Add nodes to the graph
-  nodes.forEach((node) => {
-    g.setNode(node.id.toString());
-  });
+    // Add nodes to the graph
+    nodes.forEach((node) => {
+      g.setNode(node.id.toString());
+    });
 
-  // Add edges to the graph
-  edges.forEach((edge) => {
-    g.setEdge(edge.source.toString(), edge.target.toString());
-  });
+    // Add edges to the graph
+    edges.forEach((edge) => {
+      g.setEdge(edge.source.toString(), edge.target.toString());
+    });
 
-  // Adjacency Matrix
-  const nodeIds = nodes.map((node) => node.id.toString());
-  const adjacencyMatrix = nodeIds.map((sourceId) =>
-    nodeIds.map((targetId) => (g.hasEdge(sourceId, targetId) ? 1 : 0))
-  );
+    // Adjacency Matrix
+    const nodeIds = nodes.map((node) => node.id.toString());
+    const adjacencyMatrix = nodeIds.map((sourceId) =>
+      nodeIds.map((targetId) => (g.hasEdge(sourceId, targetId) ? 1 : 0))
+    );
 
-  // All-Pairs Shortest Path
-  const allPairsShortestPath = alg.floydWarshall(g);
+    // All-Pairs Shortest Path
+    const allPairsShortestPath = alg.floydWarshall(g);
 
-  const nodeMap = new Map();
-  nodes.forEach((node) => {
-    const nodeId = node.id.toString();
-    g.setNode(nodeId);
-    nodeMap.set(nodeId, node.username || nodeId);
-  });
+    const nodeMap = new Map();
+    nodes.forEach((node) => {
+      const nodeId = node.id.toString();
+      g.setNode(nodeId);
+      nodeMap.set(nodeId, node.username || nodeId);
+    });
 
-  const nodeLabels = nodeIds.map((nodeId) => nodeMap.get(nodeId));
+    const nodeLabels = nodeIds.map((nodeId) => nodeMap.get(nodeId));
 
-  return {
-    numEdges,
-    adjacencyMatrix,
-    allPairsShortestPath,
-    nodeIds,
-    nodeLabels,
-  };
+    return {
+      numEdges,
+      adjacencyMatrix,
+      allPairsShortestPath,
+      nodeIds,
+      nodeLabels,
+    };
+  } catch (error) {
+    console.log(error);
+    return {};
+  }
 }

@@ -1,4 +1,4 @@
-import NodeFetchCache, { MemoryCache } from "node-fetch-cache";
+import NodeFetchCache, { FileSystemCache } from "node-fetch-cache";
 import pRetry from "p-retry";
 import { getSSLHubRpcClient } from "@farcaster/hub-nodejs";
 import { NextRequest } from "next/server";
@@ -12,7 +12,7 @@ const fdk = new PinataFDK({
 
 // Cache fetch requests for 1 hour
 const fetch = NodeFetchCache.create({
-  cache: new MemoryCache({ ttl: 1000 * 60 * 60 }),
+  cache: new FileSystemCache({ ttl: 1000 * 60 * 60 }),
 });
 async function request(
   url: string,
@@ -79,7 +79,7 @@ async function buildEdges(fids: number[]): Promise<Edge[]> {
     for (const target of fids) {
       if (source !== target) {
         const follows = await checkFollow(source, target);
-        console.log("follows", follows);
+        console.log("follows", follows, source, target);
         if (follows) {
           edges.push({
             source,
