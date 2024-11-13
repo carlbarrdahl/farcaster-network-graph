@@ -105,8 +105,6 @@ export async function POST(req: NextRequest) {
       users.map((user) => getFidFromUsername(user))
     ).then((fids) => fids.filter(Boolean))) as number[];
 
-    console.log(fids);
-
     const nodes = await buildNodes(fids);
     const edges = await buildEdges(nodes.map((node) => node.id));
 

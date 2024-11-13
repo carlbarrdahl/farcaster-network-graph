@@ -8,3 +8,10 @@ Here's my solution built in Typescript. It works like this:
 - Return Nodes and Edges to frontend and display in Network Graph
 - Filter graph based on Range slider input
 - Display Metrics for filtered graph in tables (number of edges, adjacency matrix, shortest path)
+
+Note: Some issues I wasn't able to solve in time
+
+- fetching many users takes a lot of time due to cross-referencing the follow state
+- after fetching from API, the slider messes up the network graph (not sure why this is happening)
+
+https://replit.com/@CarlBarrdahl/farcaster-network-graph

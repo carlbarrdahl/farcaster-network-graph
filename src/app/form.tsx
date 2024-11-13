@@ -57,12 +57,13 @@ function random(min: number, max: number): number {
 
 export function Form({
   onSubmit,
+  defaultValue = "",
   isLoading = false,
 }: {
   onSubmit: (users: string[]) => void;
   isLoading: boolean;
 }) {
-  const [value, setValue] = useState(users.join(", "));
+  const [value, setValue] = useState(defaultValue);
   return (
     <form
       onSubmit={(e) => {
